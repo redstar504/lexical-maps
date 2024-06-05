@@ -6,10 +6,13 @@ import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin'
 import { ContentEditable } from '@lexical/react/LexicalContentEditable'
 import { LexicalErrorBoundary } from '@lexical/react/LexicalErrorBoundary'
 import ToolbarPlugin from './ToolbarPlugin'
+import { useState } from 'react'
 
 function App() {
+  const [isMapsModalOpen, setIsMapsModalOpen] = useState(false)
+
   const initialConfig = {
-    namespace: 'AnchorPoint',
+    namespace: 'Maps',
     nodes: [
       AutoLinkNode,
       LinkNode,
@@ -17,38 +20,57 @@ function App() {
     onError: (error: Error) => {
       throw error
     },
+    theme: {
+      text: {
+        bold: 'editor_textBold',
+        italic: 'editor_textItalic',
+        underline: 'editor_textUnderline'
+      }
+    }
   }
 
   return (
-    <div id="container">
-      <section>
-        <h1><FcGlobe />Lexical Maps</h1>
-        <p>Lexical Maps gives you the ability to insert maps into your editor. Using a shortcode or a button on the toolbar, you can
-        quickly add an interactive map widget to your document.  The implementation uses MapBox's javascript gl library.</p>
-      </section>
+    <>
+      <div id="container">
+        <section>
+          <h1><FcGlobe />Lexical Maps</h1>
+          <p>Lexical Maps gives you the ability to insert maps into your editor. Using a shortcode or a button on the
+            toolbar, you can
+            quickly add an interactive map widget to your document. The implementation uses MapBox's javascript gl
+            library.</p>
+        </section>
 
-      <section>
-        <h2>Try it out</h2>
-        <div id="composerWrapper">
-          <LexicalComposer initialConfig={initialConfig}>
-            <ToolbarPlugin />
-            <div id="editorContainer">
-              <RichTextPlugin
-                contentEditable={
-                  <div id="editor">
-                    <ContentEditable id="contentEditable" />
-                  </div>
-                }
-                placeholder={
-                  <div id="editorPlaceholder">Type, paste, or embed URLs in some text...</div>
-                }
-                ErrorBoundary={LexicalErrorBoundary}
-              />
-            </div>
-          </LexicalComposer>
-        </div>
-      </section>
-    </div>
+        <section>
+          <h2>Try it out</h2>
+          <div id="composerWrapper">
+            <LexicalComposer initialConfig={initialConfig}>
+              <ToolbarPlugin onOpenMapModal={() => setIsMapsModalOpen(true)} />
+              <div id="editorContainer">
+                <RichTextPlugin
+                  contentEditable={
+                    <div id="editor">
+                      <ContentEditable id="contentEditable" />
+                    </div>
+                  }
+                  placeholder={
+                    <div id="editorPlaceholder">Type, paste, or embed URLs in some text...</div>
+                  }
+                  ErrorBoundary={LexicalErrorBoundary}
+                />
+              </div>
+            </LexicalComposer>
+          </div>
+        </section>
+      </div>
+      {isMapsModalOpen && (
+        <>
+          <div id="overlay"></div>
+          <div id="mapsModal">
+            <h2>Insert a Map</h2>
+          </div>
+        </>
+      )}
+    </>
   )
 }
 
