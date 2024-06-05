@@ -162,7 +162,43 @@ h1 svg {
     position: fixed;
     top: 50%;
     left: 50%;
-    width: 24em;
+    width: 32em;
     background: #FFF;
     transform: translate(-50%, -50%);
+    box-shadow: 4px 4px 0 #CCC;
+}
+
+#mapsModal header {
+    background: #eee;
+    padding: .25em 1em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#mapsModal header button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#mapsModal header button svg {
+    width: 1.25em;
+    height: 1.25em;
+}
+
+#mapsModal .mapWrapper {
+    padding: 1em;
+}
+
+#mapsModal .buttonWrapper {
+    padding: 0 1em .75em;
+    display: flex;
+    justify-content: flex-end;
+    column-gap: 1em;
+}
+
+#mapsModal .buttonWrapper button {
+    background: #eee;
+    padding: .1875em .625em;
 }

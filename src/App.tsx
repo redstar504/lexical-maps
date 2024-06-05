@@ -7,6 +7,7 @@ import { ContentEditable } from '@lexical/react/LexicalContentEditable'
 import { LexicalErrorBoundary } from '@lexical/react/LexicalErrorBoundary'
 import ToolbarPlugin from './ToolbarPlugin'
 import { useState } from 'react'
+import MapModal from './MapModal.tsx'
 
 function App() {
   const [isMapsModalOpen, setIsMapsModalOpen] = useState(false)
@@ -62,14 +63,7 @@ function App() {
           </div>
         </section>
       </div>
-      {isMapsModalOpen && (
-        <>
-          <div id="overlay"></div>
-          <div id="mapsModal">
-            <h2>Insert a Map</h2>
-          </div>
-        </>
-      )}
+      {isMapsModalOpen && <MapModal onClose={() => setIsMapsModalOpen(false)} />}
     </>
   )
 }
