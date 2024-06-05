@@ -35,7 +35,7 @@ function App() {
       <div id="container">
         <section>
           <h1><FcGlobe />Lexical Maps</h1>
-          <p>Lexical Maps gives you the ability to insert maps into your editor. Using a shortcode or a button on the
+          <p><i>Lexical Maps</i> gives you the ability to insert maps into your editor. Using a shortcode or a button on the
             toolbar, you can
             quickly add an interactive map widget to your document. The implementation uses MapBox's javascript gl
             library.</p>

@@ -57,7 +57,6 @@ body {
 #container {
     max-width: 60em;
     margin: 0 auto;
-    background: #dfdeda;
     min-height: 100%;
     display: flex;
     align-items: center;
@@ -94,19 +93,32 @@ h1 svg {
     height: 1.25em;
 }
 
-#composerWrapper {
-    box-shadow: 4px 4px 0 #CCC;
-}
-
 #toolbarWrapper {
-    background: #EDEAD9;
     color: #fff;
-    border: 1px solid #ddd;
+    display: flex;
 }
 
 #toolbarWrapper ul {
     display: flex;
     align-items: center;
+    border: 3px solid #ccc;
+    background: #EDEAD9;
+}
+
+#toolbarWrapper li {
+    border-top: 1px solid #fff;
+    border-left: 1px solid #fff;
+    border-right: 2px solid #ccc;
+}
+
+#toolbarWrapper li:last-child {
+    border-right: 0;
+}
+
+#toolbarWrapper li.active {
+    background: #cdcab9;
+    border-left: 1px solid #aaa;
+    border-top: 1px solid #aaa;
 }
 
 #toolbarWrapper li button {
@@ -115,13 +127,17 @@ h1 svg {
     align-items: center;
     height: 2em;
     min-width: 3em;
-    border-right: 1px solid #ddd;
+}
+
+#toolbarWrapper li.active button {
 }
 
 #editorContainer {
     width: 100%;
     height: 12em;
     position: relative;
+    border: 4px solid #ccc;
+    margin-top: -4px;
 }
 
 #editor {
@@ -147,6 +163,10 @@ h1 svg {
 
 #contentEditable .editor_textUnderline {
     text-decoration: underline;
+}
+
+#contentEditable .editor_textItalic {
+    font-style: italic;
 }
 
 #overlay {
