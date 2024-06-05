@@ -1,0 +1,82 @@
+/* start reset */
+
+html, body, div, p, h1, h2, h3, h4, h5, h6,
+ul, ol, li, dl, dt, dd, form, fieldset, caption, legend,
+table, tr, td, th, address, blockquote, img {
+    margin: 0;
+    padding: 0;
+}
+
+img, fieldset {
+    border: none;
+}
+
+blockquote, q {
+    quotes: none;
+}
+
+html {
+    box-sizing: border-box;
+}
+
+*, *::before, *::after {
+    box-sizing: inherit;
+}
+
+button, label, summary {
+    cursor: pointer;
+}
+
+body, button, input, table, textarea, select {
+    font-size: 1rem;
+    line-height: 1.5;
+    font-family: inherit;
+}
+
+button {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+ul {
+    list-style: none;
+}
+
+/* end reset */
+
+html, body, #root {
+    height: 100%;
+}
+
+body {
+    background: #efefea;
+    font: normal 1em/1.5 Mulish, serif;
+}
+
+#container {
+    max-width: 60em;
+    margin: 0 auto;
+    background: #dfdeda;
+    min-height: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: 1em;
+}
+
+h1 {
+    display: flex;
+    align-items: center;
+    letter-spacing: 1px;
+    column-gap: .5em;
+    background: #eee;
+    align-self: stretch;
+    justify-content: center;
+    padding: .25em;
+}
+
+h1 svg {
+    width: 1.25em;
+    height: 1.25em;
+}

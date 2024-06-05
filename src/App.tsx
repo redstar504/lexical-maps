@@ -1,8 +1,11 @@
+import './style.css'
+import { FcGlobe } from 'react-icons/fc'
+
 function App() {
   return (
-    <>
-      Lexical Maps
-    </>
+    <div id="container">
+      <h1><FcGlobe />Lexical Maps</h1>
+    </div>
   )
 }
 
