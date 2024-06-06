@@ -10,6 +10,8 @@ import { useState } from 'react'
 import MapModal from './MapModal.tsx'
 import MapsPlugin from './MapsPlugin'
 import { MapNode } from './MapsPlugin/MapNode.tsx'
+import { IoIosArrowDroprightCircle } from 'react-icons/io'
+import { FaGithub } from 'react-icons/fa'
 
 function App() {
   const [isMapsModalOpen, setIsMapsModalOpen] = useState(false)
@@ -38,11 +40,11 @@ function App() {
       <div id="container">
         <section>
           <h1><FcGlobe />Lexical Maps</h1>
-          <p><i>Lexical Maps</i> gives you the ability to insert maps into your editor. Using a shortcode or a button on
-            the
-            toolbar, you can
-            quickly add an interactive map widget to your document. The implementation uses MapBox's javascript gl
-            library.</p>
+          <p>
+            <i>Lexical Maps</i> gives you the ability to insert maps into your Lexical editor using React. Using a shortcode, or the toolbar button,
+            you can quickly add an interactive map widget to your document. The implementation uses MapBox's GL
+            library.
+          </p>
         </section>
 
         <section>
@@ -64,6 +66,29 @@ function App() {
               />
             </div>
           </div>
+          <p id="issueReporter">
+            <FaGithub />
+            <div>
+              Found a bug? Please <a href="https://github.com/redstar504/lexical-anchorpoint/issues/new">open an
+              issue</a> on Github.
+            </div>
+          </p>
+        </section>
+
+        <section>
+          <h2>Installation Instructions</h2>
+          <p>The plugin is a WIP and installation instructions are coming soon.</p>
+        </section>
+
+        <section>
+          <h2>Other Plugins</h2>
+          <p>The author has developed other plugins for Lexical framework you should check out.</p>
+          <ul>
+            <li>
+              <IoIosArrowDroprightCircle />
+              <a href="https://redstar504.github.io/lexical-anchorpoint/">Lexical AnchorPoint</a> - a revision of the built in AutoLink plugin with improvements on URL matching.
+            </li>
+          </ul>
         </section>
       </div>
       {isMapsModalOpen && <MapModal onClose={() => setIsMapsModalOpen(false)} />}
