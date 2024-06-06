@@ -27,13 +27,11 @@ export default function ToolbarPlugin({ onOpenMapModal }: ToolbarPluginPropsType
       setIsItalic(selection.hasFormat('italic'))
       setIsUnderline(selection.hasFormat('underline'))
     }
+    return true
   }, [])
 
   useEffect(() => {
-    return editor.registerCommand(SELECTION_CHANGE_COMMAND, () => {
-      $updateToolbar()
-      return true
-    }, COMMAND_PRIORITY_CRITICAL)
+    return editor.registerCommand(SELECTION_CHANGE_COMMAND, $updateToolbar, COMMAND_PRIORITY_CRITICAL)
   }, [$updateToolbar, editor])
 
   useEffect(() => {

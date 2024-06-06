@@ -57,7 +57,12 @@ function MapComponent({ dataURI, nodeKey }: MapComponentProps) {
         className={isSelected ? 'selected map' : 'map'}
       />
       {$isNodeSelection(selection) && isFocused && (
-        <p>Foo</p>
+        <>
+          <b className="tl handle"></b>
+          <b className="tr handle"></b>
+          <b className="br handle"></b>
+          <b className="bl handle"></b>
+        </>
       )}
     </>
   )

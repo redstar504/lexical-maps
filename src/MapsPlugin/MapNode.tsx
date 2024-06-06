@@ -47,7 +47,7 @@ export class MapNode extends DecoratorNode<JSX.Element> {
   createDOM(config: EditorConfig): HTMLElement {
     const span = document.createElement('span')
     const theme = config.theme
-    const className = theme.image
+    const className = theme.map
     if (className) {
       span.className = className
     }

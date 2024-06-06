@@ -32,6 +32,7 @@ function App() {
         italic: 'editor_textItalic',
         underline: 'editor_textUnderline',
       },
+      map: 'editor_map'
     },
   }
 
