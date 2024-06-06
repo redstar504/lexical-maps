@@ -9,7 +9,7 @@ import {
   createCommand,
   LexicalCommand,
 } from 'lexical'
-import { $insertNodeToNearestRoot, $wrapNodeInElement } from '@lexical/utils'
+import { $wrapNodeInElement } from '@lexical/utils'
 
 export const INSERT_MAP_COMMAND: LexicalCommand<string> = createCommand(
   'INSERT_MAP_COMMAND'

@@ -1,5 +1,4 @@
 import { BiBold, BiItalic, BiUnderline } from 'react-icons/bi'
-import { FaGlobeAmericas } from 'react-icons/fa'
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
 import {
   $getSelection,
@@ -20,7 +19,6 @@ export default function ToolbarPlugin({ onOpenMapModal }: ToolbarPluginPropsType
   const [isBold, setIsBold] = useState(false)
   const [isItalic, setIsItalic] = useState(false)
   const [isUnderline, setIsUnderline] = useState(false)
-  const [activeEditor, setActiveEditor] = useState(editor)
 
   const $updateToolbar = useCallback(() => {
     const selection = $getSelection()
@@ -32,8 +30,9 @@ export default function ToolbarPlugin({ onOpenMapModal }: ToolbarPluginPropsType
   }, [])
 
   useEffect(() => {
-    return editor.registerCommand(SELECTION_CHANGE_COMMAND, (_payload, newEditor) => {
+    return editor.registerCommand(SELECTION_CHANGE_COMMAND, () => {
       $updateToolbar()
+      return true
     }, COMMAND_PRIORITY_CRITICAL)
   }, [$updateToolbar, editor])
 

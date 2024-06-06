@@ -14,7 +14,7 @@ function MapComponent({ dataURI, nodeKey }: MapComponentProps) {
   const [isSelected, setSelected, clearSelection] = useLexicalNodeSelection(nodeKey)
   const imageRef = useRef<HTMLImageElement>(null)
   const [selection, setSelection] = useState<BaseSelection | null>()
-  const [isResizing, setIsResizing] = useState<boolean>(false)
+  const [isResizing, _setIsResizing] = useState<boolean>(false)
   const isFocused = isResizing || isSelected
 
   const onClick = useCallback((payload: MouseEvent) => {
