@@ -20,6 +20,7 @@ function MapModal({ onClose }: MapModalPropsType) {
     if (!mapRef.current) return
     const b64map = mapRef.current.getCanvas().toDataURL()
     editor.dispatchCommand(INSERT_MAP_COMMAND, b64map)
+    onClose()
   }
 
   return (
