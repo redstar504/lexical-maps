@@ -1,12 +1,27 @@
-import { Map } from 'react-map-gl'
+import { Map, MapRef } from 'react-map-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import { FaXmark } from 'react-icons/fa6'
+import { MdArrowDropDown } from 'react-icons/md'
+import { VscSearch, VscTarget } from 'react-icons/vsc'
+import { useRef, useState } from 'react'
+import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
+import { INSERT_MAP_COMMAND } from './MapsPlugin'
 
 type MapModalPropsType = {
   onClose: () => void
 }
 
 function MapModal({ onClose }: MapModalPropsType) {
+  const [isLocationFinderOpen, setIsLocationFinderOpen] = useState(false)
+  const [editor] = useLexicalComposerContext()
+  const mapRef = useRef<MapRef>(null)
+
+  const handleInsertMap = () => {
+    if (!mapRef.current) return
+    const b64map = mapRef.current.getCanvas().toDataURL()
+    editor.dispatchCommand(INSERT_MAP_COMMAND, b64map)
+  }
+
   return (
     <>
       <div id="overlay" onClick={onClose}></div>
@@ -26,11 +41,33 @@ function MapModal({ onClose }: MapModalPropsType) {
             }}
             style={{ width: '100%', height: 400 }}
             mapStyle={'mapbox://styles/mapbox/standard'}
+            ref={mapRef}
+            preserveDrawingBuffer={true}
           />
         </div>
         <div className="buttonWrapper">
-          <button type="button">Place Marker</button>
-          <button type="button">Insert Map</button>
+          <div id="findLocationWrapper">
+            <button
+              className="button"
+              type="button"
+              id="findLocationButton"
+              onClick={() => setIsLocationFinderOpen(!isLocationFinderOpen)}
+            >
+              Find Location <MdArrowDropDown />
+            </button>
+            {isLocationFinderOpen && (
+              <ul>
+                <li>
+                  <button><VscTarget />My Location</button>
+                </li>
+                <li>
+                  <button><VscSearch />Search</button>
+                </li>
+              </ul>
+            )}
+          </div>
+          <button className="button" type="button">Place Marker</button>
+          <button className="button" type="button" id="insertButton" onClick={handleInsertMap}>Insert Map</button>
         </div>
       </div>
     </>

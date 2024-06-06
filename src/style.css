@@ -134,10 +134,11 @@ h1 svg {
 
 #editorContainer {
     width: 100%;
-    height: 12em;
+    height: 24em;
     position: relative;
     border: 4px solid #ccc;
     margin-top: -4px;
+    overflow-y: auto;
 }
 
 #editor {
@@ -214,11 +215,55 @@ h1 svg {
 #mapsModal .buttonWrapper {
     padding: 0 1em .75em;
     display: flex;
-    justify-content: flex-end;
     column-gap: 1em;
 }
 
-#mapsModal .buttonWrapper button {
+#mapsModal .buttonWrapper .button {
     background: #eee;
-    padding: .1875em .625em;
+    padding: 0 .625em;
+    height: 2em;
+}
+
+#mapsModal button:hover {
+    background: #ddd;
+}
+
+#mapsModal #findLocationWrapper {
+    position: relative;
+}
+
+#mapsModal #findLocationButton {
+    display: flex;
+    align-items: center;
+}
+
+#findLocationButton svg {
+    width: 1.25em;
+    height: 1.25em;
+}
+
+#findLocationWrapper ul {
+    position: absolute;
+    background: #fafafa;
+    top: 2em;
+    left: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+#findLocationWrapper ul button {
+    width: 100%;
+    height: 2.375em;
+    text-align: left;
+    padding: 0 .5em;
+    display: flex;
+    align-items: center;
+    column-gap: .5em;
+    font-size: .875em;
+    color: #222;
+}
+
+#insertButton {
+    margin-left: auto;
 }
