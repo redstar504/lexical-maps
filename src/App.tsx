@@ -67,13 +67,13 @@ function App() {
               />
             </div>
           </div>
-          <p id="issueReporter">
+          <div id="issueReporter">
             <FaGithub />
             <div>
               Found a bug? Please <a href="https://github.com/redstar504/lexical-anchorpoint/issues/new">open an
               issue</a> on Github.
             </div>
-          </p>
+          </div>
         </section>
 
         <section>
