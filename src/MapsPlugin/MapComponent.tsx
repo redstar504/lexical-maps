@@ -5,7 +5,9 @@ import {
   $isNodeSelection,
   BaseSelection,
   CLICK_COMMAND,
-  COMMAND_PRIORITY_LOW, KEY_BACKSPACE_COMMAND,
+  COMMAND_PRIORITY_LOW,
+  DRAGSTART_COMMAND,
+  KEY_BACKSPACE_COMMAND,
   KEY_DELETE_COMMAND,
   NodeKey,
 } from 'lexical'
@@ -17,6 +19,8 @@ import { $isMapNode } from './MapNode.tsx'
 type MapComponentProps = {
   dataURI: string
   nodeKey: NodeKey
+  width: 'inherit' | number
+  height: 'inherit' | number
 }
 
 type MapImagePosition = {
@@ -38,7 +42,7 @@ const initialMapImagePosition = {
   currentWidth: 0,
   currentHeight: 0,
   aspectRatio: 0,
-  direction: 0
+  direction: 0,
 }
 
 const Direction = {
@@ -48,7 +52,12 @@ const Direction = {
   west: 1 << 2,
 }
 
-function MapComponent({ dataURI, nodeKey }: MapComponentProps) {
+function MapComponent({
+                        dataURI,
+                        nodeKey,
+                        width,
+                        height,
+                      }: MapComponentProps) {
   const [editor] = useLexicalComposerContext()
   const [isSelected, setSelected, clearSelection] = useLexicalNodeSelection(nodeKey)
   const imageRef = useRef<HTMLImageElement>(null)
@@ -92,20 +101,41 @@ function MapComponent({ dataURI, nodeKey }: MapComponentProps) {
       editor.registerCommand(
         KEY_DELETE_COMMAND,
         $onDelete,
-        COMMAND_PRIORITY_LOW
+        COMMAND_PRIORITY_LOW,
       ),
       editor.registerCommand(
         KEY_BACKSPACE_COMMAND,
         $onDelete,
-        COMMAND_PRIORITY_LOW
-      )
+        COMMAND_PRIORITY_LOW,
+      ),
+      editor.registerCommand(
+        DRAGSTART_COMMAND,
+        (event) => {
+          if (event.target === imageRef.current) {
+            // TODO This is just a temporary workaround for FF to behave like other browsers.
+            // Ideally, this handles drag & drop too (and all browsers).
+            event.preventDefault()
+            return true
+          }
+          return false
+        },
+        COMMAND_PRIORITY_LOW,
+      ),
     )
 
     return () => {
       isMounted = false
       unregister()
     }
-  }, [$onDelete, editor, onClick])
+  }, [
+    $onDelete,
+    editor,
+    onClick,
+    clearSelection,
+    isSelected,
+    nodeKey,
+    setSelected
+  ])
 
   const handlePointerDown = (dir: number) => (e: ReactPointerEvent) => {
     const img = imageRef.current
@@ -141,25 +171,40 @@ function MapComponent({ dataURI, nodeKey }: MapComponentProps) {
     const width = pos.startWidth + diff
     const height = width / pos.aspectRatio
 
+    pos.currentWidth = width
+    pos.currentHeight = height
+
     img.style.width = `${width}px`
     img.style.height = `${height}px`
   }
 
   const handlePointerUp = () => {
-    const img = imageRef.current
-    const pos = posRef.current
+    const { currentWidth, currentHeight } = posRef.current
     posRef.current = initialMapImagePosition
     removeEventListener('pointermove', handlePointerMove)
     removeEventListener('pointerup', handlePointerUp)
+
+    editor.update(() => {
+      const node = $getNodeByKey(nodeKey)
+      if (!node || !$isMapNode(node)) return
+      node.setWidthAndHeight(currentWidth, currentHeight)
+    })
   }
 
+  const isDraggable = isSelected && $isNodeSelection(selection)
+
   return (
-    <>
+    <div draggable="true">
       <img
         src={dataURI}
         alt="map"
         ref={imageRef}
-        className={isSelected ? 'selected map' : 'map'}
+        className={isSelected ? 'draggable selected map' : 'map'}
+        style={{
+          width,
+          height,
+        }}
+        draggable="false"
       />
       {$isNodeSelection(selection) && isFocused && (
         <>
@@ -169,7 +214,7 @@ function MapComponent({ dataURI, nodeKey }: MapComponentProps) {
           <b className="sw handle" onPointerDown={handlePointerDown(Direction.south | Direction.west)}></b>
         </>
       )}
-    </>
+    </div>
   )
 }
 

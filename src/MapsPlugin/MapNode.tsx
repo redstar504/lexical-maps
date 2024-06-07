@@ -1,10 +1,4 @@
-import {
-  $applyNodeReplacement,
-  DecoratorNode,
-  EditorConfig,
-  LexicalNode,
-  NodeKey,
-} from 'lexical'
+import { $applyNodeReplacement, DecoratorNode, EditorConfig, LexicalNode, NodeKey } from 'lexical'
 import { JSX } from 'react'
 import MapComponent from './MapComponent.tsx'
 
@@ -12,17 +6,32 @@ type SerializedMapNode = {
   dataURI: string
   type: 'map'
   version: 1
+  width?: number
+  height?: number
+}
+
+export interface MapPayload {
+  dataURI: string
+  key?: NodeKey,
+  width?: number
+  height?: number
 }
 
 export class MapNode extends DecoratorNode<JSX.Element> {
   __dataURI: string
+  __width: 'inherit' | number
+  __height: 'inherit' | number
 
   constructor(
     dataURI: string,
+    width?: 'inherit' | number,
+    height?: 'inherit' | number,
     key?: NodeKey,
   ) {
     super(key)
     this.__dataURI = dataURI
+    this.__width = width || 'inherit'
+    this.__height = height || 'inherit'
   }
 
   static getType(): string {
@@ -32,6 +41,8 @@ export class MapNode extends DecoratorNode<JSX.Element> {
   static clone(node: MapNode): MapNode {
     return new MapNode(
       node.__dataURI,
+      node.__width,
+      node.__height,
       node.__key,
     )
   }
@@ -40,6 +51,8 @@ export class MapNode extends DecoratorNode<JSX.Element> {
     return {
       dataURI: this.__dataURI,
       type: 'map' as const,
+      height: this.__height === 'inherit' ? 0 : this.__height,
+      width: this.__width === 'inherit' ? 0 : this.__width,
       version: 1,
     }
   }
@@ -60,18 +73,42 @@ export class MapNode extends DecoratorNode<JSX.Element> {
 
   static importJSON(serializedNode: SerializedMapNode): MapNode {
     const { dataURI } = serializedNode
-    return $createMapNode(dataURI)
+    return $createMapNode({ dataURI })
   }
 
   decorate(): JSX.Element {
     return (
-      <MapComponent dataURI={this.__dataURI} nodeKey={this.__key} />
+      <MapComponent
+        dataURI={this.__dataURI}
+        nodeKey={this.__key}
+        width={this.__width}
+        height={this.__height}
+      />
     )
+  }
+
+  setWidthAndHeight(
+    width: 'inherit' | number,
+    height: 'inherit' | number,
+  ): void {
+    const writable = this.getWritable()
+    writable.__width = width
+    writable.__height = height
   }
 }
 
-export function $createMapNode(dataURI: string): MapNode {
-  const node = new MapNode(dataURI)
+export function $createMapNode({
+  dataURI,
+  width,
+  height,
+  key
+}: MapPayload): MapNode {
+  const node = new MapNode(
+    dataURI,
+    width,
+    height,
+    key
+  )
   return $applyNodeReplacement(node)
 }
 
