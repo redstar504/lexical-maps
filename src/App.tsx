@@ -12,6 +12,7 @@ import MapsPlugin from './MapsPlugin'
 import { MapNode } from './MapsPlugin/MapNode.tsx'
 import { IoIosArrowDroprightCircle } from 'react-icons/io'
 import { FaGithub } from 'react-icons/fa'
+import { NodeEventPlugin } from '@lexical/react/LexicalNodeEventPlugin'
 
 function App() {
   const [isMapsModalOpen, setIsMapsModalOpen] = useState(false)
@@ -32,7 +33,7 @@ function App() {
         italic: 'editor_textItalic',
         underline: 'editor_textUnderline',
       },
-      map: 'editor_map'
+      map: 'editor_map',
     },
   }
 
@@ -42,7 +43,8 @@ function App() {
         <section>
           <h1><FcGlobe />Lexical Maps</h1>
           <p>
-            <i>Lexical Maps</i> gives you the ability to insert maps into your Lexical editor using React. Using a shortcode, or the toolbar button,
+            <i>Lexical Maps</i> gives you the ability to insert maps into your Lexical editor using React. Using a
+            shortcode, or the toolbar button,
             you can quickly add an interactive map widget to your document. The implementation uses MapBox's GL
             library.
           </p>
@@ -66,6 +68,13 @@ function App() {
                 ErrorBoundary={LexicalErrorBoundary}
               />
             </div>
+            <NodeEventPlugin
+              nodeType={MapNode}
+              eventType={'dblclick'}
+              eventListener={() => {
+                setIsMapsModalOpen(true)
+              }}
+            />
           </div>
           <div id="issueReporter">
             <FaGithub />
@@ -87,7 +96,8 @@ function App() {
           <ul>
             <li>
               <IoIosArrowDroprightCircle />
-              <a href="https://redstar504.github.io/lexical-anchorpoint/">Lexical AnchorPoint</a> - a revision of the built in AutoLink plugin with improvements on URL matching.
+              <a href="https://redstar504.github.io/lexical-anchorpoint/">Lexical AnchorPoint</a> - a revision of the
+              built in AutoLink plugin with improvements on URL matching.
             </li>
           </ul>
         </section>

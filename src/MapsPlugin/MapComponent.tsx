@@ -62,8 +62,6 @@ function MapComponent({
   const [isSelected, setSelected, clearSelection] = useLexicalNodeSelection(nodeKey)
   const imageRef = useRef<HTMLImageElement>(null)
   const [selection, setSelection] = useState<BaseSelection | null>()
-  const [isResizing, _setIsResizing] = useState<boolean>(false)
-  const isFocused = isResizing || isSelected
   const posRef = useRef<MapImagePosition>(initialMapImagePosition)
 
   const onClick = useCallback((payload: MouseEvent) => {
@@ -134,7 +132,7 @@ function MapComponent({
     clearSelection,
     isSelected,
     nodeKey,
-    setSelected
+    setSelected,
   ])
 
   const handlePointerDown = (dir: number) => (e: ReactPointerEvent) => {
@@ -191,8 +189,6 @@ function MapComponent({
     })
   }
 
-  const isDraggable = isSelected && $isNodeSelection(selection)
-
   return (
     <div draggable="true">
       <img
@@ -206,12 +202,13 @@ function MapComponent({
         }}
         draggable="false"
       />
-      {$isNodeSelection(selection) && isFocused && (
+      {$isNodeSelection(selection) && isSelected && (
         <>
           <b className="nw handle" onPointerDown={handlePointerDown(Direction.north | Direction.west)}></b>
           <b className="ne handle" onPointerDown={handlePointerDown(Direction.north | Direction.east)}></b>
           <b className="se handle" onPointerDown={handlePointerDown(Direction.south | Direction.east)}></b>
           <b className="sw handle" onPointerDown={handlePointerDown(Direction.south | Direction.west)}></b>
+          <span className="editorTip">Double click to edit</span>
         </>
       )}
     </div>

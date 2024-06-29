@@ -1,37 +1,47 @@
 import { $applyNodeReplacement, DecoratorNode, EditorConfig, LexicalNode, NodeKey } from 'lexical'
 import { JSX } from 'react'
 import MapComponent from './MapComponent.tsx'
+import { LatLng } from '../types.ts'
 
-type SerializedMapNode = {
+
+type BaseMapFields = {
   dataURI: string
-  type: 'map'
-  version: 1
-  width?: number
-  height?: number
+  width?: number | 'inherit'
+  height?: number | 'inherit'
+  zoom?: number
+  center?: LatLng
 }
 
-export interface MapPayload {
-  dataURI: string
+interface SerializedMapNode extends BaseMapFields {
+  type: 'map'
+  version: 1
+}
+
+export interface MapPayload extends BaseMapFields {
   key?: NodeKey,
-  width?: number
-  height?: number
 }
 
 export class MapNode extends DecoratorNode<JSX.Element> {
   __dataURI: string
   __width: 'inherit' | number
   __height: 'inherit' | number
+  __center: LatLng
+  __zoom: number
 
   constructor(
     dataURI: string,
     width?: 'inherit' | number,
     height?: 'inherit' | number,
+    center?: LatLng,
+    zoom?: number,
     key?: NodeKey,
   ) {
     super(key)
     this.__dataURI = dataURI
     this.__width = width || 'inherit'
     this.__height = height || 'inherit'
+    this.__center = center || { lng: -100, lat: 40 }
+    this.__zoom = zoom || 5
   }
 
   static getType(): string {
@@ -43,6 +53,8 @@ export class MapNode extends DecoratorNode<JSX.Element> {
       node.__dataURI,
       node.__width,
       node.__height,
+      node.__center,
+      node.__zoom,
       node.__key,
     )
   }
@@ -53,6 +65,8 @@ export class MapNode extends DecoratorNode<JSX.Element> {
       type: 'map' as const,
       height: this.__height === 'inherit' ? 0 : this.__height,
       width: this.__width === 'inherit' ? 0 : this.__width,
+      center: this.__center,
+      zoom: this.__zoom,
       version: 1,
     }
   }
@@ -101,12 +115,16 @@ export function $createMapNode({
   dataURI,
   width,
   height,
+  center,
+  zoom,
   key
 }: MapPayload): MapNode {
   const node = new MapNode(
     dataURI,
     width,
     height,
+    center,
+    zoom,
     key
   )
   return $applyNodeReplacement(node)

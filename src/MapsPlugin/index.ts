@@ -2,18 +2,21 @@ import { JSX, useEffect } from 'react'
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
 import { $createMapNode, $isMapNode, MapNode, MapPayload } from './MapNode.tsx'
 import {
-  $createParagraphNode, $createRangeSelection,
+  $createParagraphNode,
+  $createRangeSelection,
   $getSelection,
   $insertNodes,
   $isNodeSelection,
-  $isRootOrShadowRoot, $setSelection,
+  $isRootOrShadowRoot,
+  $setSelection,
   COMMAND_PRIORITY_EDITOR,
   COMMAND_PRIORITY_LOW,
   createCommand,
   DRAGOVER_COMMAND,
   DRAGSTART_COMMAND,
   DROP_COMMAND,
-  LexicalCommand, LexicalEditor,
+  LexicalCommand,
+  LexicalEditor,
 } from 'lexical'
 import { $wrapNodeInElement, CAN_USE_DOM, mergeRegister } from '@lexical/utils'
 
@@ -37,7 +40,7 @@ const TRANSPARENT_IMAGE =
 const img = document.createElement('img')
 img.src = TRANSPARENT_IMAGE
 
-function $getMapNodeInSelection(): MapNode | null {
+export function $getMapNodeInSelection(): MapNode | null {
   const selection = $getSelection()
   if (!$isNodeSelection(selection)) return null
   const nodes = selection.getNodes()
@@ -145,6 +148,7 @@ export default function MapsPlugin(): JSX.Element | null {
       editor.registerCommand<MapPayload>(INSERT_MAP_COMMAND, payload => {
         const mapNode = $createMapNode(payload)
         $insertNodes([mapNode])
+        console.log(mapNode.getParentOrThrow())
         if ($isRootOrShadowRoot(mapNode.getParentOrThrow())) {
           $wrapNodeInElement(mapNode, $createParagraphNode).selectEnd()
         }
